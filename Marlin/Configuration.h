@@ -36,7 +36,7 @@
 #define SERIAL_PORT 0
 
 // This determines the communication speed of the printer
-#define BAUDRATE 250000
+#define BAUDRATE 115200
 
 // This enables the serial port associated to the Bluetooth interface
 //#define BTENABLED              // Enable BT interface on AT90USB devices
@@ -44,7 +44,7 @@
 // The following define selects which electronics board you have.
 // Please choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_ULTIMAKER
+  #define MOTHERBOARD BOARD_RAMPS_13_EFB
 #endif
 
 // Define this to set a custom name for your generic Mendel,
@@ -104,10 +104,10 @@
 // 147 is Pt100 with 4k7 pullup
 // 110 is Pt100 with 1k pullup (non standard)
 
-#define TEMP_SENSOR_0 -1
-#define TEMP_SENSOR_1 -1
+#define TEMP_SENSOR_0 1
+#define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
-#define TEMP_SENSOR_BED 0
+#define TEMP_SENSOR_BED 1
 
 // This makes temp sensor 1 a redundant sensor for sensor 0. If the temperatures difference between these sensors is to high the print will be aborted.
 //#define TEMP_SENSOR_1_AS_REDUNDANT
@@ -121,10 +121,10 @@
 // The minimal temperature defines the temperature below which the heater will not be enabled It is used
 // to check that the wiring to the thermistor is not broken.
 // Otherwise this would lead to the heater being powered on all the time.
-#define HEATER_0_MINTEMP 5
-#define HEATER_1_MINTEMP 5
-#define HEATER_2_MINTEMP 5
-#define BED_MINTEMP 5
+#define HEATER_0_MINTEMP 10
+#define HEATER_1_MINTEMP 10
+#define HEATER_2_MINTEMP 10
+#define BED_MINTEMP 10
 
 // When temperature exceeds max temp, your heater will be switched off.
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
@@ -160,9 +160,9 @@
 
 // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 // Ultimaker
-    #define  DEFAULT_Kp 22.2
-    #define  DEFAULT_Ki 1.08
-    #define  DEFAULT_Kd 114
+    #define  DEFAULT_Kp 29.51
+    #define  DEFAULT_Ki 1.68
+    #define  DEFAULT_Kd 129.93
 
 // MakerGear
 //    #define  DEFAULT_Kp 7.0
@@ -198,9 +198,9 @@
 #ifdef PIDTEMPBED
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-    #define  DEFAULT_bedKp 10.00
-    #define  DEFAULT_bedKi .023
-    #define  DEFAULT_bedKd 305.4
+    #define  DEFAULT_bedKp 300.22
+    #define  DEFAULT_bedKi 24.93
+    #define  DEFAULT_bedKd 903.86
 
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from pidautotune
@@ -219,7 +219,7 @@
 //if PREVENT_DANGEROUS_EXTRUDE is on, you can still disable (uncomment) very long bits of extrusion separately.
 #define PREVENT_LENGTHY_EXTRUDE
 
-#define EXTRUDE_MINTEMP 170
+#define EXTRUDE_MINTEMP 170  //TODO poner 170
 #define EXTRUDE_MAXLENGTH (X_MAX_LENGTH+Y_MAX_LENGTH) //prevent extrusion of very large distances.
 
 /*================== Thermal Runaway Protection ==============================
@@ -334,11 +334,11 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 #define max_software_endstops true  // If true, axis won't move to coordinates greater than the defined lengths below.
 
 // Travel limits after homing
-#define X_MAX_POS 205
+#define X_MAX_POS 200
 #define X_MIN_POS 0
-#define Y_MAX_POS 205
+#define Y_MAX_POS 200
 #define Y_MIN_POS 0
-#define Z_MAX_POS 200
+#define Z_MAX_POS 155 // 180 si cambio
 #define Z_MIN_POS 0
 
 #define X_MAX_LENGTH (X_MAX_POS - X_MIN_POS)
@@ -436,27 +436,27 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 
   #endif
 
-  #ifdef AUTO_BED_LEVELING_GRID	// Check if Probe_Offset * Grid Points is greater than Probing Range
+  #ifdef AUTO_BED_LEVELING_GRID  // Check if Probe_Offset * Grid Points is greater than Probing Range
     #if X_PROBE_OFFSET_FROM_EXTRUDER < 0
       #if (-(X_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (RIGHT_PROBE_BED_POSITION - LEFT_PROBE_BED_POSITION))
-	     #error "The X axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
-	  #endif
-	#else
+       #error "The X axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
+    #endif
+  #else
       #if ((X_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (RIGHT_PROBE_BED_POSITION - LEFT_PROBE_BED_POSITION))
-	     #error "The X axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
-	  #endif
-	#endif
+       #error "The X axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
+    #endif
+  #endif
     #if Y_PROBE_OFFSET_FROM_EXTRUDER < 0
       #if (-(Y_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (BACK_PROBE_BED_POSITION - FRONT_PROBE_BED_POSITION))
-	     #error "The Y axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
-	  #endif
-	#else
+       #error "The Y axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
+    #endif
+  #else
       #if ((Y_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (BACK_PROBE_BED_POSITION - FRONT_PROBE_BED_POSITION))
-	     #error "The Y axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
-	  #endif
-	#endif
+       #error "The Y axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
+    #endif
+  #endif
 
-	
+  
   #endif
   
 #endif // ENABLE_AUTO_BED_LEVELING
@@ -479,12 +479,18 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 
 // default settings
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {78.7402,78.7402,200.0*8/3,760*1.1}  // default steps per unit for Ultimaker
-#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 25}    // (mm/sec)
-#define DEFAULT_MAX_ACCELERATION      {9000,9000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
 
-#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  3000   // X, Y, Z and E max acceleration in mm/s^2 for retracts
+// e_steps_per_mm = (motor_steps_per_rev * driver_microstep) * (big_gear_teeth / small_gear_teeth) / (hob_effective_diameter/2.0 * tau)
+//                =  ( 400 * 16 )  * ( 47 / 9 )   / ( 8/2.0 * 6.283185 )
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {320.00,320.00,7960.0,1650.0}  // default steps per unit for Ultimaker // 1445.5 funcionando bien, bajo corriente en el motor y veo que falta extruir 14% de lo pedido.
+// 1650 anda bien en los 10 mm para E
+// en Z deberia ser 8000 pero puse 7960 para corregir una pequenia diferencia, que no me explico mas que por el tornillo M5
+
+#define DEFAULT_MAX_FEEDRATE          {200, 200, 2, 20}    // (mm/sec)
+#define DEFAULT_MAX_ACCELERATION      {2000,2000,20,1000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
+
+#define DEFAULT_ACCELERATION          1000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  1000   // X, Y, Z and E max acceleration in mm/s^2 for retracts
 
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
@@ -493,7 +499,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 // #define EXTRUDER_OFFSET_Y {0.0, 5.00}  // (in mm) for each extruder, offset of the hotend on the Y axis
 
 // The speed change that does not require acceleration (i.e. the software might assume it can be done instantaneously)
-#define DEFAULT_XYJERK                20.0    // (mm/sec)
+#define DEFAULT_XYJERK                10.0    // (mm/sec)
 #define DEFAULT_ZJERK                 0.4     // (mm/sec)
 #define DEFAULT_EJERK                 5.0    // (mm/sec)
 
@@ -522,12 +528,12 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 //#define EEPROM_CHITCHAT
 
 // Preheat Constants
-#define PLA_PREHEAT_HOTEND_TEMP 180
-#define PLA_PREHEAT_HPB_TEMP 70
+#define PLA_PREHEAT_HOTEND_TEMP 175
+#define PLA_PREHEAT_HPB_TEMP 45
 #define PLA_PREHEAT_FAN_SPEED 255   // Insert Value between 0 and 255
 
-#define ABS_PREHEAT_HOTEND_TEMP 240
-#define ABS_PREHEAT_HPB_TEMP 100
+#define ABS_PREHEAT_HOTEND_TEMP 235
+#define ABS_PREHEAT_HPB_TEMP 95
 #define ABS_PREHEAT_FAN_SPEED 255   // Insert Value between 0 and 255
 
 //LCD and SD support
@@ -540,7 +546,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 //#define ENCODER_STEPS_PER_MENU_ITEM 5 // Set according to ENCODER_PULSES_PER_STEP or your liking
 //#define ULTIMAKERCONTROLLER //as available from the Ultimaker online store.
 //#define ULTIPANEL  //the UltiPanel as on Thingiverse
-//#define LCD_FEEDBACK_FREQUENCY_HZ 1000	// this is the tone frequency the buzzer plays when on UI feedback. ie Screen Click
+//#define LCD_FEEDBACK_FREQUENCY_HZ 1000  // this is the tone frequency the buzzer plays when on UI feedback. ie Screen Click
 //#define LCD_FEEDBACK_FREQUENCY_DURATION_MS 100 // the duration the buzzer plays the UI feedback sound. ie Screen Click
 
 // The MaKr3d Makr-Panel with graphic controller and SD support
@@ -629,17 +635,17 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
   #define ULTIPANEL
 
   #ifndef ENCODER_PULSES_PER_STEP
-	#define ENCODER_PULSES_PER_STEP 4
+  #define ENCODER_PULSES_PER_STEP 4
   #endif
 
   #ifndef ENCODER_STEPS_PER_MENU_ITEM
-	#define ENCODER_STEPS_PER_MENU_ITEM 1
+  #define ENCODER_STEPS_PER_MENU_ITEM 1
   #endif
 
 
   #ifdef LCD_USE_I2C_BUZZER
-	#define LCD_FEEDBACK_FREQUENCY_HZ 1000
-	#define LCD_FEEDBACK_FREQUENCY_DURATION_MS 100
+  #define LCD_FEEDBACK_FREQUENCY_HZ 1000
+  #define LCD_FEEDBACK_FREQUENCY_DURATION_MS 100
   #endif
 
 #endif
@@ -769,13 +775,13 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 // Uncomment below to enable
 //#define FILAMENT_SENSOR
 
-#define FILAMENT_SENSOR_EXTRUDER_NUM	0  //The number of the extruder that has the filament sensor (0,1,2)
-#define MEASUREMENT_DELAY_CM			14  //measurement delay in cm.  This is the distance from filament sensor to middle of barrel
+#define FILAMENT_SENSOR_EXTRUDER_NUM  0  //The number of the extruder that has the filament sensor (0,1,2)
+#define MEASUREMENT_DELAY_CM      14  //measurement delay in cm.  This is the distance from filament sensor to middle of barrel
 
-#define DEFAULT_NOMINAL_FILAMENT_DIA  3.0  //Enter the diameter (in mm) of the filament generally used (3.0 mm or 1.75 mm) - this is then used in the slicer software.  Used for sensor reading validation
+#define DEFAULT_NOMINAL_FILAMENT_DIA  1.75  //Enter the diameter (in mm) of the filament generally used (3.0 mm or 1.75 mm) - this is then used in the slicer software.  Used for sensor reading validation
 #define MEASURED_UPPER_LIMIT          3.30  //upper limit factor used for sensor reading validation in mm
 #define MEASURED_LOWER_LIMIT          1.90  //lower limit factor for sensor reading validation in mm
-#define MAX_MEASUREMENT_DELAY			20  //delay buffer size in bytes (1 byte = 1cm)- limits maximum measurement delay allowable (must be larger than MEASUREMENT_DELAY_CM  and lower number saves RAM)
+#define MAX_MEASUREMENT_DELAY     20  //delay buffer size in bytes (1 byte = 1cm)- limits maximum measurement delay allowable (must be larger than MEASUREMENT_DELAY_CM  and lower number saves RAM)
 
 //defines used in the code
 #define DEFAULT_MEASURED_FILAMENT_DIA  DEFAULT_NOMINAL_FILAMENT_DIA  //set measured to nominal initially 
